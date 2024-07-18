@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const db_1 = require("./db");
 const washingMachines = JSON.parse(fs_1.default.readFileSync(path_1.default.join("washingMachines.json")).toString());
 function fibonacci(n) {
     let secqueance = [0, 1];
@@ -26,6 +27,10 @@ function fibonacci(n) {
 const server = (0, fastify_1.default)();
 server.get("/api/v1/test/:n", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
     const n = parseInt(request.params.n);
+    if (n === 0 || n > 100) {
+        reply.status(400);
+        return { error: "Invalid input  " };
+    }
     const secqueance = fibonacci(n);
     let total = 0;
     for (let i = 0; i < secqueance.length; i++) {
@@ -38,16 +43,87 @@ server.get("/api/v1/test/:n", (request, reply) => __awaiter(void 0, void 0, void
     };
 }));
 server.get("/api/washing", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
-    return { washingMachines };
+    try {
+        const washingMachines = yield (0, db_1.getAllMachines)();
+        return { washingMachines };
+    }
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
 }));
 server.get("/api/washing/:id", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
     const id = parseInt(request.params.id);
-    const washingMachine = washingMachines.find((wm) => wm.id === id);
-    if (!washingMachine) {
-        reply.status(404);
-        return { error: "Washing machine not found" };
+    try {
+        const machine = yield (0, db_1.getMachine)(id);
+        if (!machine) {
+            reply.status(404);
+            return { error: "Machine not found" };
+        }
+        return { machine };
     }
-    return washingMachine;
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+}));
+server.post("/api/washing", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    const { status, inUse, coin, timeLeft } = request.body;
+    try {
+        const id = yield (0, db_1.addMachine)(status, inUse, coin, timeLeft);
+        return { id };
+    }
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+}));
+server.put("/api/washing/coin/:id", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(request.params.id);
+    const { coin } = request.body;
+    try {
+        yield (0, db_1.insertCoin)(id, coin);
+        return { id };
+    }
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+}));
+server.put("/api/washing/time/:id", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(request.params.id);
+    const { timeLeft } = request.body;
+    try {
+        yield (0, db_1.updateTimeLeft)(id, timeLeft);
+        return { id };
+    }
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+}));
+server.put("/api/washing/status/:id", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(request.params.id);
+    const { status } = request.body;
+    try {
+        yield (0, db_1.updateStatus)(id, status);
+        return { id };
+    }
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+}));
+server.delete("/api/washing/:id", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(request.params.id);
+    try {
+        yield (0, db_1.deleteMachine)(id);
+        return { id };
+    }
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
 }));
 server.listen(3000, (err, address) => {
     if (err) {

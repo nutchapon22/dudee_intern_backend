@@ -1,13 +1,13 @@
 import fastify from "fastify";
+import fs from "fs";
+import path from "path";
+import { getAllMachines, addMachine, getMachine, insertCoin, updateTimeLeft, updateStatus, deleteMachine } from './db';
 
 interface WashingMachine {
     id: number;
     status: string;
     timeUse: number;
 }
-
-import fs from "fs";
-import path from "path";
 
 const washingMachines: WashingMachine[] = JSON.parse(
     fs.readFileSync(path.join("washingMachines.json")).toString()
@@ -25,6 +25,10 @@ const server = fastify();
 
 server.get<{ Params: { n: string } }>("/api/v1/test/:n", async (request, reply) => {
     const n = parseInt(request.params.n);
+    if (n === 0 || n > 100) {
+        reply.status(400);
+        return { error: "Invalid input  " };
+    }
     const secqueance = fibonacci(n);
     let total = 0;
     for (let i = 0; i < secqueance.length; i++) {
@@ -37,17 +41,88 @@ server.get<{ Params: { n: string } }>("/api/v1/test/:n", async (request, reply) 
     };
 });
 server.get("/api/washing", async (request, reply) => {
-    return { washingMachines };
+    try {
+        const washingMachines = await getAllMachines();
+        return { washingMachines };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
 });
 
 server.get<{ Params: { id: string } }>("/api/washing/:id", async (request, reply) => {
     const id = parseInt(request.params.id);
-    const washingMachine = washingMachines.find((wm) => wm.id === id);
-    if (!washingMachine) {
-        reply.status(404);
-        return { error: "Washing machine not found" };
+    try {
+        const machine = await getMachine(id);
+        if (!machine) {
+            reply.status(404);
+            return { error: "Machine not found" };
+        }
+        return { machine };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
     }
-    return washingMachine;
+});
+
+
+
+server.post<{ Body: { status: string, inUse: boolean, coin: number, timeLeft: string } }>("/api/washing", async (request, reply) => {
+    const { status, inUse, coin, timeLeft } = request.body;
+    try {
+        const id = await addMachine(status, inUse, coin, timeLeft);
+        return { id };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+});
+
+server.put<{ Params: { id: string }, Body: { coin: number } }>("/api/washing/coin/:id", async (request, reply) => {
+    const id = parseInt(request.params.id);
+    const { coin } = request.body;
+    try {
+        await insertCoin(id, coin);
+        return { id };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+});
+
+server.put<{ Params: { id: string }, Body: { timeLeft: string } }>("/api/washing/time/:id", async (request, reply) => {
+    const id = parseInt(request.params.id);
+    const { timeLeft } = request.body;
+    try {
+        await updateTimeLeft(id, timeLeft);
+        return { id };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+});
+
+server.put<{ Params: { id: string }, Body: { status: string } }>("/api/washing/status/:id", async (request, reply) => {
+    const id = parseInt(request.params.id);
+    const { status } = request.body;
+    try {
+        await updateStatus(id, status);
+        return { id };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+});
+
+server.delete<{ Params: { id: string } }>("/api/washing/:id", async (request, reply) => {
+    const id = parseInt(request.params.id);
+    try {
+        await deleteMachine(id);
+        return { id };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
 });
 
 server.listen(3000, (err, address) => {
