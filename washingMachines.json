@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "status": "available",
+        "timeUse": 0
+    },
+    {
+        "id": 2,
+        "status": "available",
+        "timeUse": 0
+    },
+    {
+        "id": 3,
+        "status": "available",
+        "timeUse": 0
+    },
+    {
+        "id": 4,
+        "status": "available",
+        "timeUse": 0
+    },
+    {
+        "id": 5,
+        "status": "available",
+        "timeUse": 0
+    }
+]
