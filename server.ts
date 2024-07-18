@@ -1,17 +1,5 @@
 import fastify from "fastify";
-import fs from "fs";
-import path from "path";
-import { getAllMachines, addMachine, getMachine, insertCoin, updateTimeLeft, updateStatus, deleteMachine } from './db';
-
-interface WashingMachine {
-    id: number;
-    status: string;
-    timeUse: number;
-}
-
-const washingMachines: WashingMachine[] = JSON.parse(
-    fs.readFileSync(path.join("washingMachines.json")).toString()
-);
+import { addMachine, deleteMachine, getAllMachines, getMachine, insertCoin, updateStatus, updateTimeLeft } from './db';
 
 function fibonacci(n: number): number[] {
     let secqueance = [0, 1];

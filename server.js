@@ -13,10 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
 const db_1 = require("./db");
-const washingMachines = JSON.parse(fs_1.default.readFileSync(path_1.default.join("washingMachines.json")).toString());
 function fibonacci(n) {
     let secqueance = [0, 1];
     for (let i = 2; i < n; i++) {
