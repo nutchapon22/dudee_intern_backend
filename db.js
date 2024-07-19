@@ -43,7 +43,24 @@ const getMachine = (id) => {
     });
 };
 exports.getMachine = getMachine;
-const addMachine = (status, inUse, coin, timeLeft) => {
+// export const addMachine = (status: string, inUse: boolean, coin: number, timeLeft: string): Promise<number> => {
+//     return new Promise((resolve, reject) => {
+//         db.run(`INSERT INTO machines (status, inUse, coin, timeLeft) VALUES (?, ?, ?, ?)`,
+//             [status, inUse, coin, timeLeft],
+//             function (err) {
+//                 if (err) {
+//                     reject(err);
+//                 } else {
+//                     resolve(this.lastID);
+//                 }
+//             });
+//     });
+// };
+const addMachine = () => {
+    const status = "ACTIVE";
+    const inUse = false;
+    const coin = 0;
+    const timeLeft = "00:00:00";
     return new Promise((resolve, reject) => {
         db.run(`INSERT INTO machines (status, inUse, coin, timeLeft) VALUES (?, ?, ?, ?)`, [status, inUse, coin, timeLeft], function (err) {
             if (err) {

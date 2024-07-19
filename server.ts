@@ -13,7 +13,7 @@ const server = fastify();
 
 server.get<{ Params: { n: string } }>("/api/v1/test/:n", async (request, reply) => {
     const n = parseInt(request.params.n);
-    if(isNaN(n)){
+    if (isNaN(n)) {
         reply.status(400);
         return { error: "Invalid input  " };
     }
@@ -59,10 +59,9 @@ server.get<{ Params: { id: string } }>("/api/washing/:id", async (request, reply
 
 
 
-server.post<{ Body: { status: string, inUse: boolean, coin: number, timeLeft: string } }>("/api/washing", async (request, reply) => {
-    const { status, inUse, coin, timeLeft } = request.body;
+server.post("/api/washing", async (request, reply) => {
     try {
-        const id = await addMachine(status, inUse, coin, timeLeft);
+        const id = await addMachine();
         return { id };
     } catch (err) {
         reply.status(500);

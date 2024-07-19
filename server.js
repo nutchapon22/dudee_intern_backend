@@ -69,9 +69,8 @@ server.get("/api/washing/:id", (request, reply) => __awaiter(void 0, void 0, voi
     }
 }));
 server.post("/api/washing", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
-    const { status, inUse, coin, timeLeft } = request.body;
     try {
-        const id = yield (0, db_1.addMachine)(status, inUse, coin, timeLeft);
+        const id = yield (0, db_1.addMachine)();
         return { id };
     }
     catch (err) {
