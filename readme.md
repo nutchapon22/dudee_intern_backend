@@ -38,27 +38,23 @@ clone project โดยใช้คำสั่งใน comand promt
 
 #### แสดงทั้งหมด 
 
-    GET: http://localhost:3000/api/washing
+     http://localhost:3000/api/washing
+
+method : GET
 
 #### แสดงค่าจาก id 
 
     GET: http://localhost:3000/api/washing/{id}
-  
+  method : GET
 #### เพิ่มเครื่องซักผ้า
 
-    POST: http://localhost:3000/api/washing
-ใส่ body
+     http://localhost:3000/api/washing
+method : POST
 
-    {
-	    "status": TEXT,
-	    "inUse" : BOOLEAN,
-	    "coin": INTEGER,
-	    "timeleft": TEXT
-    }
 #### อัพเดทเวลา
 
-    PUT: http://localhost:3000/api/washing/time/{id}
-
+     http://localhost:3000/api/washing/time/{id}
+mehod : PUT
 ใส่ body
 
     {
@@ -67,8 +63,9 @@ clone project โดยใช้คำสั่งใน comand promt
 
 ####  อัพเดทเหรียญ
 
-    PUT: http://localhost:3000/api/washing/coin/{id}
+     http://localhost:3000/api/washing/coin/{id}
   
+ method : PUT 
  ใส่ body
 
     {
@@ -86,6 +83,6 @@ clone project โดยใช้คำสั่งใน comand promt
     
 #### ลบเครื่อง
 
-    DELETE: http://localhost:3000/api/washing/{id}
-
-## ตัวอย่าง output
+     http://localhost:3000/api/washing/{id}
+method: DELETE
+##
