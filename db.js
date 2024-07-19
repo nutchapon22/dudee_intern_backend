@@ -8,7 +8,6 @@ const sqlite3_1 = __importDefault(require("sqlite3"));
 const path_1 = __importDefault(require("path"));
 const dbPath = path_1.default.resolve(__dirname, 'washingMachine.db');
 const db = new sqlite3_1.default.Database(dbPath);
-// Initialize the database
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS machines (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

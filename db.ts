@@ -100,3 +100,5 @@ export const deleteMachine = (id: number): Promise<void> => {
         });
     });
 }
+
+

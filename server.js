@@ -24,6 +24,10 @@ function fibonacci(n) {
 const server = (0, fastify_1.default)();
 server.get("/api/v1/test/:n", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
     const n = parseInt(request.params.n);
+    if (isNaN(n)) {
+        reply.status(400);
+        return { error: "Invalid input  " };
+    }
     if (n === 0 || n > 100) {
         reply.status(400);
         return { error: "Invalid input  " };

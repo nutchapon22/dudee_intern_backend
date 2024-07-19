@@ -13,6 +13,10 @@ const server = fastify();
 
 server.get<{ Params: { n: string } }>("/api/v1/test/:n", async (request, reply) => {
     const n = parseInt(request.params.n);
+    if(isNaN(n)){
+        reply.status(400);
+        return { error: "Invalid input  " };
+    }
     if (n === 0 || n > 100) {
         reply.status(400);
         return { error: "Invalid input  " };
