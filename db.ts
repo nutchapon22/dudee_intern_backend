@@ -4,7 +4,6 @@ import path from 'path';
 const dbPath = path.resolve(__dirname, 'washingMachine.db');
 const db = new sqlite3.Database(dbPath);
 
-// Initialize the database
 db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS machines (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -88,6 +87,7 @@ export const updateStatus = (id: number, status: string): Promise<void> => {
         });
     });
 }
+
 
 export const deleteMachine = (id: number): Promise<void> => {
     return new Promise((resolve, reject) => {
