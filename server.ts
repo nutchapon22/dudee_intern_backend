@@ -11,6 +11,12 @@ function fibonacci(n: number): number[] {
 
 const server = fastify();
 
+
+server.get("/", async (request, reply) => {
+    return { hello: "welcome!" };
+});
+
+
 server.get<{ Params: { n: string } }>("/api/v1/test/:n", async (request, reply) => {
     const n = parseInt(request.params.n);
     if (isNaN(n)) {
@@ -35,7 +41,7 @@ server.get<{ Params: { n: string } }>("/api/v1/test/:n", async (request, reply) 
 server.get("/api/washing", async (request, reply) => {
     try {
         const washingMachines = await getAllMachines();
-        return { washingMachines };
+        return washingMachines;
     } catch (err) {
         reply.status(500);
         return { error: "Internal server error" };
@@ -50,7 +56,7 @@ server.get<{ Params: { id: string } }>("/api/washing/:id", async (request, reply
             reply.status(404);
             return { error: "Machine not found" };
         }
-        return { machine };
+        return  machine ;
     } catch (err) {
         reply.status(500);
         return { error: "Internal server error" };

@@ -22,6 +22,9 @@ function fibonacci(n) {
     return secqueance;
 }
 const server = (0, fastify_1.default)();
+server.get("/", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    return { hello: "welcome!" };
+}));
 server.get("/api/v1/test/:n", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
     const n = parseInt(request.params.n);
     if (isNaN(n)) {
@@ -46,7 +49,7 @@ server.get("/api/v1/test/:n", (request, reply) => __awaiter(void 0, void 0, void
 server.get("/api/washing", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const washingMachines = yield (0, db_1.getAllMachines)();
-        return { washingMachines };
+        return washingMachines;
     }
     catch (err) {
         reply.status(500);
@@ -61,7 +64,7 @@ server.get("/api/washing/:id", (request, reply) => __awaiter(void 0, void 0, voi
             reply.status(404);
             return { error: "Machine not found" };
         }
-        return { machine };
+        return machine;
     }
     catch (err) {
         reply.status(500);
