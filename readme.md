@@ -35,6 +35,7 @@ clone project โดยใช้คำสั่งใน comand promt
 ## สำหรับ fibonacci sequence 
 
     http://localhost:3000/api/v1/test/{จำนวนลำดับ}
+method : GET
 
 ## สำหรับ washing machine
 
@@ -47,7 +48,7 @@ method : GET
 #### แสดงจาก id 
 
      http://localhost:3000/api/washing/{id}
-  method : GET
+method : GET
 #### เพิ่มเครื่องซักผ้า
 
      http://localhost:3000/api/washing
