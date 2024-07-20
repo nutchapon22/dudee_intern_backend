@@ -117,6 +117,18 @@ server.put("/api/washing/status/:id", (request, reply) => __awaiter(void 0, void
         return { error: "Internal server error" };
     }
 }));
+server.put("/api/washing/inUse/:id", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(request.params.id);
+    const { inUse } = request.body;
+    try {
+        yield (0, db_1.updateInUse)(id, inUse);
+        return { id };
+    }
+    catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+}));
 server.delete("/api/washing/:id", (request, reply) => __awaiter(void 0, void 0, void 0, function* () {
     const id = parseInt(request.params.id);
     try {

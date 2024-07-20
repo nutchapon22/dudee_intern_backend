@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteMachine = exports.updateStatus = exports.updateTimeLeft = exports.insertCoin = exports.addMachine = exports.getMachine = exports.getAllMachines = void 0;
+exports.deleteMachine = exports.updateInUse = exports.updateStatus = exports.updateTimeLeft = exports.insertCoin = exports.addMachine = exports.getMachine = exports.getAllMachines = void 0;
 const sqlite3_1 = __importDefault(require("sqlite3"));
 const path_1 = __importDefault(require("path"));
 const dbPath = path_1.default.resolve(__dirname, 'washingMachine.db');
@@ -112,6 +112,19 @@ const updateStatus = (id, status) => {
     });
 };
 exports.updateStatus = updateStatus;
+const updateInUse = (id, inUse) => {
+    return new Promise((resolve, reject) => {
+        db.run("UPDATE machines SET inUse = ? WHERE id = ?", [inUse, id], (err) => {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve();
+            }
+        });
+    });
+};
+exports.updateInUse = updateInUse;
 const deleteMachine = (id) => {
     return new Promise((resolve, reject) => {
         db.run("DELETE FROM machines WHERE id = ?", [id], (err) => {

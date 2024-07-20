@@ -106,6 +106,18 @@ export const updateStatus = (id: number, status: string): Promise<void> => {
     });
 }
 
+export const updateInUse = (id: number, inUse: boolean): Promise<void> => {
+    return new Promise((resolve, reject) => {
+        db.run("UPDATE machines SET inUse = ? WHERE id = ?", [inUse, id], (err) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 
 export const deleteMachine = (id: number): Promise<void> => {
     return new Promise((resolve, reject) => {

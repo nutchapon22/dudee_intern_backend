@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import { addMachine, deleteMachine, getAllMachines, getMachine, insertCoin, updateStatus, updateTimeLeft } from './db';
+import { addMachine, deleteMachine, getAllMachines, getMachine, insertCoin, updateInUse, updateStatus, updateTimeLeft } from './db';
 
 function fibonacci(n: number): number[] {
     let secqueance = [0, 1];
@@ -56,7 +56,7 @@ server.get<{ Params: { id: string } }>("/api/washing/:id", async (request, reply
             reply.status(404);
             return { error: "Machine not found" };
         }
-        return  machine ;
+        return machine;
     } catch (err) {
         reply.status(500);
         return { error: "Internal server error" };
@@ -104,6 +104,18 @@ server.put<{ Params: { id: string }, Body: { status: string } }>("/api/washing/s
     const { status } = request.body;
     try {
         await updateStatus(id, status);
+        return { id };
+    } catch (err) {
+        reply.status(500);
+        return { error: "Internal server error" };
+    }
+});
+
+server.put<{ Params: { id: string }, Body: { inUse: boolean } }>("/api/washing/inUse/:id", async (request, reply) => {
+    const id = parseInt(request.params.id);
+    const { inUse } = request.body;
+    try {
+        await updateInUse(id, inUse);
         return { id };
     } catch (err) {
         reply.status(500);
