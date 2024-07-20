@@ -3,7 +3,7 @@
 
 api สำหรับนวณ ลำดับ fibonacci โดย respond ค่า
 
- -  จำนวน member
+ - จำนวน member
  - ตัวเลขในลำดับ
  - ผลรวมของตัวเลขในลำดับ
 
@@ -46,7 +46,7 @@ method : GET
 
 #### แสดงจาก id 
 
-    GET: http://localhost:3000/api/washing/{id}
+     http://localhost:3000/api/washing/{id}
   method : GET
 #### เพิ่มเครื่องซักผ้า
 
